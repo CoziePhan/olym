@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vòng Quay May Mắn - Olympic Địa Lý</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Vòng Quay May Mắn <span class="highlight">Olympic Địa Lý</span></h1>
+            <p class="subheading">Chúc đội tuyển thi Olympic Địa Lý ngày 30/4 thành công!</p>
+        </div>
+
+        <div id="initial-screen" class="initial-screen">
+            <button id="start-button" class="start-button">Chỉ Được Chơi 1 Lần</button>
+        </div>
+
+        <div id="wheel-container" class="wheel-container hidden">
+            <div class="wheel-wrapper">
+                <div class="pointer">
+                    <i class="fas fa-long-arrow-alt-down"></i>
+                </div>
+                <div id="wheel" class="wheel">
+                    <div class="wheel-section" style="--rotate: 0deg; --bg-color: #1E88E5;">
+                        <span>99%</span>
+                    </div>
+                    <div class="wheel-section" style="--rotate: 36deg; --bg-color: #43A047;">
+                        <span>88%</span>
+                    </div>
+                    <div class="wheel-section" style="--rotate: 72deg; --bg-color: #FDD835;">
+                        <span>95%</span>
+                    </div>
+                    <div class="wheel-section" style="--rotate: 108deg; --bg-color: #26A69A;">
+                        <span>92%</span>
+                    </div>
+                    <div class="wheel-section" style="--rotate: 144deg; --bg-color: #5E35B1;">
+                        <span>97%</span>
+                    </div>
+                    <div class="wheel-section" style="--rotate: 180deg; --bg-color: #039BE5;">
+                        <span>90%</span>
+                    </div>
+                    <div class="wheel-section" style="--rotate: 216deg; --bg-color: #7CB342;">
+                        <span>93%</span>
+                    </div>
+                    <div class="wheel-section" style="--rotate: 252deg; --bg-color: #FFB300;">
+                        <span>96%</span>
+                    </div>
+                    <div class="wheel-section" style="--rotate: 288deg; --bg-color: #00ACC1;">
+                        <span>91%</span>
+                    </div>
+                    <div class="wheel-section" style="--rotate: 324deg; --bg-color: #EC407A;">
+                        <span>99%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button id="spin-button" class="spin-button">Quay!</button>
+            </div>
+
+            <div id="result-display" class="result-display hidden">
+                <div class="result-card">
+                    <h3>Kết quả:</h3>
+                    <p id="result-text" class="result-text">99%</p>
+                    <div class="result-glow"></div>
+                </div>
+            </div>
+
+            <div id="poem-display" class="poem-display hidden">
+                <div class="poem-card">
+                    <h3>Lời chúc may mắn:</h3>
+                    <p id="poem-text"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const poems = [
+            "Địa lý tinh thông, bản đồ thuộc nằm lòng\nOlympic đến rồi, chiến thắng nở hoa\nTriển khai kiến thức, tỏa sáng gần xa\nChúc bạn 99% điểm tuyệt đối!",
+            
+            "Dải đất hình S, sông núi hữu tình\nKhông gian, vùng miền, em thuộc làu làu\nOlympic Địa lý, thi đấu thật hay\nChúc bạn 99% điểm tối đa!",
+            
+            "Đường đồng mức nét, dân số rõ ràng\nKinh tế phát triển, môi trường bền vững\nKiến thức Địa lý, em nắm vững vàng\nChúc bạn 99% thành công rực rỡ!",
+            
+            "Bản đồ, Atlat, công cụ em thông thạo\nBiểu đồ, số liệu, phân tích tinh tường\nOlympic Địa lý, em tỏa sáng trên đường\nChúc bạn 99% tự tin, xuất sắc!",
+            
+            "Các châu lục rộng lớn, em biết từng chi tiết\nVùng núi, đồng bằng, em nắm vững từng vùng\nTrái đất thiên nhiên, em hiểu tường tận\nChúc bạn 99% thi đấu thành công!",
+            
+            "Sơn văn, thủy văn, em thuộc nằm lòng\nDân văn, địa chính, em hiểu ngọn nguồn\nOlympic Địa lý, tự tin bước tiếp\nChúc bạn 99% may mắn, thành công!",
+            
+            "Khí hậu, thời tiết, em hiểu rõ ngọn nguồn\nĐịa hình, địa mạo, em thuộc từng đường nét\nThi đấu Olympic, em sẽ thắng to\nChúc bạn 99% thành công mỹ mãn!",
+            
+            "Đồng bằng phù sa, cao nguyên trập trùng\nKinh tuyến, vĩ tuyến, em vẽ rõ ràng\nOlympic Địa lý, tri thức bừng sáng\nChúc bạn 99% thành công rạng rỡ!",
+            
+            "Thủy triều lên xuống, dòng chảy uốn lượn\nCánh rừng nhiệt đới, xanh mướt tươi tốt\nBản đồ trong tay, em tỏa sáng hôm nay\nChúc bạn 99% chiến thắng vẻ vang!",
+            
+            "Địa lý nhân văn, tự nhiên em am hiểu\nAtlas trong tay, thế giới thu nhỏ\nOlympic 30/4, em sẽ tỏa sáng\nChúc bạn 99% trí tuệ, thành công!"
+        ];
+
+        const wheelSections = [
+            { value: "99%", probability: 0.2 },
+            { value: "88%", probability: 0.05 },
+            { value: "95%", probability: 0.15 },
+            { value: "92%", probability: 0.05 },
+            { value: "97%", probability: 0.15 },
+            { value: "90%", probability: 0.05 },
+            { value: "93%", probability: 0.05 },
+            { value: "96%", probability: 0.1 },
+            { value: "91%", probability: 0.05 },
+            { value: "99%", probability: 0.15 }
+        ];
+
+        document.getElementById('start-button').addEventListener('click', function() {
+            document.getElementById('initial-screen').classList.add('hidden');
+            document.getElementById('wheel-container').classList.remove('hidden');
+        });
+
+        document.getElementById('spin-button').addEventListener('click', function() {
+            const spinButton = document.getElementById('spin-button');
+            const resultDisplay = document.getElementById('result-display');
+            const poemDisplay = document.getElementById('poem-display');
+            
+            // Hide previous results
+            resultDisplay.classList.add('hidden');
+            poemDisplay.classList.add('hidden');
+            
+            spinButton.disabled = true;
+            spinButton.textContent = 'Đang quay...';
+            
+            const wheel = document.getElementById('wheel');
+            wheel.classList.add('spinning');
+            
+            // Always land on 99% (first or last section)
+            let landingValue = "99%";
+            let endAngle;
+            
+            // Choose between the two 99% sections (0° or 324°)
+            if (Math.random() < 0.5) {
+                // First section (0°)
+                endAngle = 360 * 5 + 0; // 5 full rotations + 0°
+            } else {
+                // Last section (324°)
+                endAngle = 360 * 5 + 324; // 5 full rotations + 324°
+            }
+            
+            wheel.style.transform = `rotate(${endAngle}deg)`;
+            
+            setTimeout(function() {
+                wheel.classList.remove('spinning');
+                spinButton.disabled = false;
+                spinButton.textContent = 'Quay lại!';
+                
+                // Show result first
+                resultDisplay.classList.remove('hidden');
+                document.getElementById('result-text').innerText = landingValue;
+                
+                // Show poem after a delay
+                setTimeout(function() {
+                    poemDisplay.classList.remove('hidden');
+                    
+                    // Random poem
+                    const randomPoemIndex = Math.floor(Math.random() * poems.length);
+                    document.getElementById('poem-text').innerText = poems[randomPoemIndex];
+                }, 1000);
+                
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
